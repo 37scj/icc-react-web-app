@@ -1,7 +1,15 @@
+footer{
+  position: sticky;
+  background-color: #EEE;
+  bottom: 0;
+}
 .App {
   text-align: center;
+  min-height: 90vh;
 }
-
+.App-notFound{
+  min-height: 90vh;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -15,17 +23,13 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 12vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 @keyframes App-logo-spin {
@@ -35,4 +39,52 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+
+.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+}
+
+.navItem {
+  float: left;
+  text-align: center;
+  flex: 1;
+  margin: 0;
+  padding: 3px;
+  list-style-type: none; 
+  border-right: 1px solid #bbb;
+}
+.navItem:first-child {
+  /* margin-left: 25px; */
+}
+
+.navItem:last-child {
+  border-right: none;
+}
+
+.navItem a {
+  display: block;
+  color: white;
+  padding: 14px 20px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.navItem a:hover {
+  background-color: #111;
+}
+
+.navItem .active {
+  background-color: #4CAF50;
 }

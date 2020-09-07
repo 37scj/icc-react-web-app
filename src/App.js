@@ -1,26 +1,57 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
+import Home from './pages/home/home';
+import Tracking from './pages/tracking/tracking';
+
+const routes = [
+  { name: 'Home', path: '/', exact: true, component: Home },
+  { name: 'Tracking', path: '/tracking', exact: true, component: Tracking },
+  { name: 'mais uma', path: '/maisuma', exact: true, component: Home },
+];
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <header className="App-header">ICC - Inter Comm Central</header>
+      <div className="App">
+        <Router>
+          <div className="menu">
+            <ul className="nav">
+              {routes.map((route, i) => (<li key={i} className="navItem">
+                <NavLink to={route.path} exact={route.exact} >{route.name}</NavLink>
+              </li>
+              ))}
+            </ul>
+          </div>
+          <div className="content">
+            <Switch>
+              {routes.map((route, i) => (<Route
+                key={i}
+                path={route.path}
+                exact={route.exact}
+                component={route.component}
+              />
+              ))}
+              <Route path='*' component={ComponenteDePagina404} />
+            </Switch>
+          </div>
+        </Router>
+      </div>
+      <footer>
+        Copyright &copy;
+      </footer>
     </div>
   );
+}
+
+function ComponenteDePagina404() {
+  return (<div className="App-notFound">Page not found</div>);
 }
 
 export default App;
