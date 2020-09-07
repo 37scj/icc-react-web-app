@@ -4,10 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import SuspenseApp from './Suspense';
+import { Provider } from 'react-redux';
+import store from './store';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   (<React.Suspense fallback={SuspenseApp}>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.Suspense>),
   document.getElementById('root')
 );

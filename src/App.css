@@ -88,3 +88,19 @@ footer{
 .navItem .active {
   background-color: #4CAF50;
 }
+
+.navItem .active:hover {
+  background-color: #383;
+}
+
+
+/*  */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row:not(:last-child) {
+  margin-bottom: 16px;
+}

@@ -30,7 +30,7 @@ function App() {
             </ul>
           </div>
           <div className="content">
-            <Switch>
+            <Switch >
               {routes.map((route, i) => (<Route
                 key={i}
                 path={route.path}
