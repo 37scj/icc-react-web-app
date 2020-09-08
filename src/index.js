@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import SuspenseApp from './Suspense';
 import { Provider } from 'react-redux';
 import store from './store';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'fontsource-roboto';
 
 ReactDOM.render(
   (<React.Suspense fallback={SuspenseApp}>

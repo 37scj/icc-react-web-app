@@ -1,8 +1,7 @@
-import React from 'react';
-import { useFormInput } from '../../helpers/hooks';
-import { Row, Button, Container } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Switch, FormControlLabel, Container, Slider, Typography, Box } from '@material-ui/core';
 
-export default function Drone() {
+export default () => {
     const drone = {
         id: useFormInput(1),
         name: useFormInput('Drone 1'),
@@ -13,31 +12,76 @@ export default function Drone() {
         tracking: useFormInput(false),
     }
 
+    function useFormInput(initialValue, isSwitch) {
+        const [value, setValue] = useState(initialValue)
+        const onChange = (e, newValue) => {
+            console.log('change', newValue, e.target)
+            if (newValue) {
+                setValue(newValue);
+            } else {
+                setValue(e.target.value);
+            }
+        }
+        return {
+            value,
+            onChange
+        }
+    }
+
     return (<Container>
-        <Row xl={2}>
+        <Box xl={2}>
             <label>Drone ID</label>
             <span aria-label="ID Drone">{drone.id.value}</span>
-        </Row>
-        <Row xs={2}>
+        </Box>
+        <Box xs={2}>
             <label>Name:</label>
             <input {...drone.name} />
-        </Row>
-        <Row xs={2}>
+        </Box>
+        <Box xs={2}>
             <label>Latitude</label>
             <input aria-label="Latitude" {...drone.latitude} />
-        </Row>
-        <Row xs={2}>
+        </Box>
+        <Box xs={2}>
             <label>Longitude</label>
             <input aria-label="Longitude" {...drone.longitude} />
-        </Row>
-        <Row xs={2}>
+        </Box>
+        <Box xs={2}>
+            <label>Temperature</label>
+            <input aria-label="Temperature" {...drone.temperature} />
+            <Typography id="temperature-slider" gutterBottom>Temperature</Typography>
+            <Slider
+                {...drone.temperature}
+                aria-labelledby="temperature-slider"
+                step={0.1}
+                min={-25}
+                max={40}
+                valueLabelDisplay="auto"
+                valueLabelFormat={v => v + '°C'}
+                getAriaValueText={() => drone.temperature.value}
+            />
+        </Box>
+        <Box xs={2}>
             <label>Humidity</label>
             <input aria-label="Humidity" {...drone.humidity} />
-        </Row>
-        <Row xs={2}>
-            <label>Tracking</label>
-            <input aria-label="Tracking" type="checkbox" {...drone.tracking} />
-        </Row>
+            <Typography id="humidity-slider" >Humidity</Typography>
+            <Slider 
+                {...drone.humidity}
+                aria-labelledby="humidity-slider"
+                labelPlacement="start"
+                step={0.1}
+                min={0}
+                max={100}
+                valueLabelDisplay="auto"
+                valueLabelFormat={v => drone.humidity.value + '%'}
+                getAriaValueText={() => drone.humidity.value}
+            />
+        </Box>
+        <Box>
+            <FormControlLabel
+                control={<Switch {...drone.tracking} />}
+                labelPlacement="start" label="Tracking"
+            />
+        </Box>
     </Container>);
 
 }
