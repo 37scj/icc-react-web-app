@@ -15,7 +15,6 @@ export default () => {
     function useFormInput(initialValue, isSwitch) {
         const [value, setValue] = useState(initialValue)
         const onChange = (e, newValue) => {
-            console.log('change', newValue, e.target)
             if (newValue) {
                 setValue(newValue);
             } else {
@@ -67,7 +66,7 @@ export default () => {
             <Slider 
                 {...drone.humidity}
                 aria-labelledby="humidity-slider"
-                labelPlacement="start"
+                labelplacement="start"
                 step={0.1}
                 min={0}
                 max={100}

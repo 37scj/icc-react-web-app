@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { Fade } from '@material-ui/core';
 import Home from './pages/home/home';
-import Tracking from './pages/tracking/tracking';
+import Tracking from './pages/tracking/Tracking';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 const routes = [
@@ -27,7 +27,7 @@ function App() {
           <div className="menu">
             <ul className="nav">
               {routes.map((route, i) => (<li key={i} className="navItem">
-                <NavLink to={route.path} exact={route.exact} >{route.name}</NavLink>
+                <NavLink to={route.path} exact={route.exact}>{route.name}</NavLink>
               </li>
               ))}
             </ul>
