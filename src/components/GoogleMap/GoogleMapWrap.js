@@ -8,8 +8,7 @@ import {
 } from "react-google-maps"
 import { MarkerClusterer } from "react-google-maps/lib/components/addons/MarkerClusterer"
 
-// const key = "AIzaSyD0Rl8_u08deZdD9QJuBWvXmw94lEJlNy0";
-const key = "AIzaSyAet8Mk1nPvOn_AebLE5ZxXoGejOD8tPzA";
+const key = process.env.REACT_APP_GMAPSKEY;
 
 const MapWithMarkers = compose(
     withProps({
