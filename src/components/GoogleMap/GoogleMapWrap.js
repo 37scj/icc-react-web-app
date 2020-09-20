@@ -38,7 +38,10 @@ const MapWithMarkers = compose(
             enableRetinaIcons
             gridSize={10}
         >
-            {((props?.markers) ?? []).map((mark, i) => (<Marker key={props.keyName ? mark[props.keyName] : 'marker_' + i} lat={mark.lat} lng={mark.lng} />))}
+            {((props?.markers) ?? []).map((mark, i) => (<Marker key={props.keyName ? mark[props.keyName] : 'marker_' + i} 
+                      position={{ lat: mark.latitude, lng: mark.longitude }}
+                       />))}
+
         </MarkerClusterer>
     </GoogleMap>)
 });

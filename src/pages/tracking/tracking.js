@@ -21,8 +21,8 @@ export default function Tracking() {
 
     fetch(url)
       .then(res => res.json())
-      .then(data => data?.photos.slice(0, 100)||[])
-      .then(d => d.map(data=>Object.assign({}, data, { lat: data.latitude, lng: data.longitude })))
+      .then(data => (data?.photos.slice(0, 100))??[])
+      .then(d => d.map(data=>Object.assign({}, data, {position: { lat: data.latitude, lng: data.longitude }})))
       .then(data => setMarkers(data||[]));
   }
 
