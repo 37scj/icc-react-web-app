@@ -13,7 +13,7 @@ const key = process.env.REACT_APP_GMAPSKEY;
 const MapWithMarkers = compose(
     withProps({
         googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + key + "&v=3.exp&libraries=geometry,drawing,places",
-        loadingElement: (<div style={{ height: `100%` }} />),
+        loadingElement: <div style={{ height: `100%` }} />,
         containerElement: <div style={{ height: `600px` }} />,
         mapElement: <div style={{ height: `100%` }} />,
     }),
@@ -27,19 +27,18 @@ const MapWithMarkers = compose(
     withScriptjs,
     withGoogleMap,
 )(props => {
-    console.log(props)
+    console.log(props);
     return (<GoogleMap
-        defaultZoom={8}
-        defaultCenter={{ lat: -23.533773, lng: -46.625290 }}//são paulo
+        defaultZoom={7}
+        defaultCenter={props.defaultCenter ?? { lat: -23.533773, lng: -46.625290 }}//são paulo
     >
         <MarkerClusterer
             onClick={props.onMarkerClustererClick}
             averageCenter
             enableRetinaIcons
-            gridSize={60}
+            gridSize={10}
         >
-            {props.markers && props.markers
-            .map((mark, i) => (<Marker key={props.keyName ? mark[props.keyName] : 'marker_'+i} lat={mark.latitude} lng={mark.longitude} />))}
+            {((props?.markers) ?? []).map((mark, i) => (<Marker key={props.keyName ? mark[props.keyName] : 'marker_' + i} lat={mark.lat} lng={mark.lng} />))}
         </MarkerClusterer>
     </GoogleMap>)
 });
