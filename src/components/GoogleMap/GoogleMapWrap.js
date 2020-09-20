@@ -28,10 +28,10 @@ const MapWithMarkers = compose(
     withScriptjs,
     withGoogleMap,
 )(props => {
-console.log(props)
+    console.log(props)
     return (<GoogleMap
         defaultZoom={8}
-        defaultCenter={{ lat: -23.533773, lng: -46.625290 }}
+        defaultCenter={{ lat: -23.533773, lng: -46.625290 }}//são paulo
     >
         <MarkerClusterer
             onClick={props.onMarkerClustererClick}
@@ -39,7 +39,8 @@ console.log(props)
             enableRetinaIcons
             gridSize={60}
         >
-            {props.markers && props.markers.map(m => (<Marker key={m[`${props.keyName}`]} {...m} />))}
+            {props.markers && props.markers
+            .map((mark, i) => (<Marker key={props.keyName ? mark[props.keyName] : 'marker_'+i} lat={mark.latitude} lng={mark.longitude} />))}
         </MarkerClusterer>
     </GoogleMap>)
 });
