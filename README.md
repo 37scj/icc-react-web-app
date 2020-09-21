@@ -1,6 +1,9 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Inter Communcator Central - Drone Sensorial Controller
 
-## Available Scripts
+### Using Google Maps Plataform API - react-google-maps
+
+https://tomchentw.github.io/react-google-maps/#markerwithlabel
+
 
 In the project directory, you can run:
 
