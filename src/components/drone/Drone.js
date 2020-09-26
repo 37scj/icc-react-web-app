@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Switch, FormControlLabel, Container, Slider, Typography, Box } from '@material-ui/core';
 
-export default () => {
+export default (props) => {
     const drone = {
-        id: useFormInput(1),
-        name: useFormInput('Drone 1'),
+        id: useFormInput(props.id ? props.id : 1),
+        name: useFormInput(props.name ? props.name : 'Drone 1'),
         latitude: useFormInput(48.8882),
         longitude: useFormInput(47.243232),
         temperature: useFormInput(29.2),
@@ -27,7 +27,7 @@ export default () => {
         }
     }
 
-    return (<Container>
+    return (<Container className="boxDrone">
         <Box xl={2}>
             <label>Drone ID</label>
             <span aria-label="ID Drone">{drone.id.value}</span>
@@ -63,7 +63,7 @@ export default () => {
             <label>Humidity</label>
             <input aria-label="Humidity" {...drone.humidity} />
             <Typography id="humidity-slider" >Humidity</Typography>
-            <Slider 
+            <Slider
                 {...drone.humidity}
                 aria-labelledby="humidity-slider"
                 labelplacement="start"

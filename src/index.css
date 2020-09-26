@@ -21,3 +21,10 @@ code {
   opacity: 1;
   transition: opacity 250ms ease-in;
 }
+
+.boxDrone{
+  display: inline-flex;
+  width: auto;
+  min-width: 300px;
+  max-width: 400px;
+}
