@@ -1,34 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Drone from '../../components/drone/Drone';
-import Grid from '@material-ui/core/Grid';
+import { Container, Grid } from '@material-ui/core';
+import droneService from '../../services/droneService';
+
+function NovoDrone(props) {
+  const [nome, setNome] = useState("");
+  function add() {
+    droneService.newDrone(nome)
+      .then((r) => {
+        if (r.ok) {
+          props.fetchDrones && props.fetchDrones();
+        }
+      })
+      .catch(error => console.log(error));
+  }
+
+  return (<Container container style={{ padding: '30px' }}>
+    <input value={nome} onChange={e => setNome(e.target.value)} />
+    <button className="add" onClick={() => add()}>Add Drone</button>
+  </Container>);
+}
 
 function Home() {
 
-  const drone1 = {id:'1', name:'Drone X'};
-  const drones=[drone1];
-  const [nome, setNome] = useState("");
+  const [drones, setDrones] = useState([]);
 
-  async function fetch(){
-    // setDrones([drone1]);
+  function fetchDrones() {
+    droneService.getAllDrones()
+      .then(d => d.json().then(d => setDrones(d || [])))
+      .catch(error => console.log(error));
   }
 
-  ///fetch();
-
-  function add() {
-    drones.push({'id':drones.length, 'name': nome});
-  }
+  // Nota: O array [] deps vazio significa este useEffect será executado uma vez
+  // semelhante ao componentDidMount()
+  useEffect(() => fetchDrones(), []);
 
   return (
     <div className="Home">
-      <Grid container item spacing={30}>
-        <input value={nome} onChange={e=>setNome(e.target.value)}/>
-        <button className="add" onClick={add()}>Add Drone</button>
-      </Grid>
+      <NovoDrone fetchDrones={() => fetchDrones()} />
       {/* <Drone id={1} name="Drone fixo"/> */}
-      <Grid container spacing={30}>
-          {drones.map((drone,i)=>
-            <Drone key={i} id={drone.id} name={drone.name}/>
-          )}
+      <Grid container xs spacing={30}>
+        {drones.map((drone, i) =>
+          <Drone key={i} {...drone} />
+        )}
       </Grid>
     </div>
   );

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Switch, FormControlLabel, Container, Slider, Typography, Box } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Switch, FormControlLabel, Slider, Typography, Box, makeStyles, withStyles } from '@material-ui/core';
+import droneService from '../../services/droneService';
+import style from './drone.module.css';
 
 export default (props) => {
+    console.log(props)
     const drone = {
         id: useFormInput(props.id ? props.id : 1),
         name: useFormInput(props.name ? props.name : 'Drone 1'),
@@ -29,40 +32,47 @@ export default (props) => {
 
     function update() {
         const data = {
-            id: drone.id,
-            nome: drone.name,
-            latitude: drone.latitude,
-            longitude: drone.longitude,
-            temperatura: drone.temperature,
-            umidade: drone.humidity,
+            id: drone.id.value,
+            nome: drone.name.value,
+            latitude: drone.latitude.value,
+            longitude: drone.longitude.value,
+            temperatura: drone.temperature.value,
+            umidade: drone.humidity.value,
         };
 
-        console.log(JSON.stringify(data));
+        console.log(data);
 
-        fetch('http://localhost:8090/drones', {
-            mode: 'no-cors',
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json'
-            },
-            body: data
-        })
-        .then(response => response.text())
-        .then(data => console.log(data))
-        .catch(error => console.log(error));
+        droneService.saveDrone(data)
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
 
     };
 
+    function fetchDrone() {
+        droneService.getDrone(drone.id.value)
+            .then(d => d.json())
+            .then(d => setDrones(d))
+            .catch(error => console.log(error));
+    }
 
-    return (<div>
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchDrone();
+        }, 10000);
+        // Clear timeout if the component is unmounted
+        return () => clearTimeout(timer);
+    }, []);
+
+
+
+    return (<div className={style.drone}>
         <Box xl={2}>
             <label>Drone ID</label>
             <span aria-label="ID Drone">{drone.id.value}</span>
         </Box>
         <Box xs={2}>
-            <label>Name:</label>
-            <input {...drone.name} />
+            <label>Drone Name:</label>
+            <input aria-label="Drone name" {...drone.name} />
         </Box>
         <Box xs={2}>
             <label>Latitude</label>
@@ -109,7 +119,7 @@ export default (props) => {
                 labelPlacement="start" label="Tracking"
             />
         </Box>
-        <button onClick={update()}>Atualizar drone {drone.name.value}</button>
+        <button onClick={() => update()}>Atualizar drone {drone.name.value}</button>
     </div>);
 
 }
