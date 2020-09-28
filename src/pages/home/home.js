@@ -37,14 +37,20 @@ function Home() {
 
   return (
     <div className="Home">
-      <NovoDrone fetchDrones={() => fetchDrones()} />
-      {/* <Drone id={1} name="Drone fixo"/> */}
-      <Grid container xs spacing={30}>
-        {drones.map((drone, i) =>
-          <Drone key={i} {...drone} />
-        )}
+      <Grid container xs={12} spacing={1}>
+        <NovoDrone fetchDrones={() => fetchDrones()} />
       </Grid>
-    </div>
+      {/* <Drone id={1} name="Drone fixo"/> */}
+      <Container maxWidth="lg">
+        <Grid container xs={12} spacing={1} justify="space-around">
+          {drones.map((drone, i) =>
+            <Grid item key={i} item xl={4} style={{ maxWidth: '330px'}}>
+              <Drone {...drone} />
+            </Grid>
+          )}
+        </Grid>
+      </Container>
+    </div >
   );
 }
 

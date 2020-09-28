@@ -17,6 +17,7 @@ function getAllDrones() {
     return a;
   });
 }
+
 function getDrone(id) {
   return fetch(`${urlBase}/drones/${id}`, {
     method: 'GET',
@@ -26,9 +27,16 @@ function getDrone(id) {
     return a;
   });
 }
+function deleteDrone(id) {
+  return fetch(`${urlBase}/drones/${id}`, {
+    method: 'DELETE',
+    headers: headers,
+  }).then(a => {
+    if (isDebug) console.log(a);
+    return a;
+  });
+}
 
-
-// mode: 'no-cors', // 'cors' by default
 function saveDrone(drone) {
   return fetch(`${urlBase}/drones`, {
     method: 'POST',
@@ -45,11 +53,11 @@ function newDrone(nome) {
   return fetch(`${urlBase}/drones`, {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify({ id: 0, name: nome })
+    body: JSON.stringify({ id: 0, nome })
   }).then(a => {
     if (isDebug) console.log(a);
     return a;
   });
 }
 
-export default { getAllDrones, getDrone, saveDrone, newDrone };
+export default { getAllDrones, getDrone, deleteDrone, saveDrone, newDrone };
