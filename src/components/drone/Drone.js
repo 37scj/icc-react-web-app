@@ -5,11 +5,11 @@ export default (props) => {
     const drone = {
         id: useFormInput(props.id ? props.id : 1),
         name: useFormInput(props.name ? props.name : 'Drone 1'),
-        latitude: useFormInput(48.8882),
-        longitude: useFormInput(47.243232),
-        temperature: useFormInput(29.2),
-        humidity: useFormInput(45.3),
-        tracking: useFormInput(false),
+        latitude: useFormInput(props.latitude ? props.latitude : 48.8882),
+        longitude: useFormInput(props.longitude ? props.longitude : 47.243232),
+        temperature: useFormInput(props.temperature ? props.temperature : 29.2),
+        humidity: useFormInput(props.humidity ? props.humidity : 45.3),
+        tracking: useFormInput((props.tracking != null || props.tracking != undefined) ? props.tracking : false),
     }
 
     function useFormInput(initialValue, isSwitch) {
@@ -27,7 +27,35 @@ export default (props) => {
         }
     }
 
-    return (<Container className="boxDrone">
+    function update() {
+        const data = {
+            id: drone.id,
+            nome: drone.name,
+            latitude: drone.latitude,
+            longitude: drone.longitude,
+            temperatura: drone.temperature,
+            umidade: drone.humidity,
+        };
+
+        console.log(JSON.stringify(data));
+
+        fetch('http://localhost:8090/drones', {
+            mode: 'no-cors',
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json'
+            },
+            body: data
+        })
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.log(error));
+
+    };
+
+
+    return (<div>
         <Box xl={2}>
             <label>Drone ID</label>
             <span aria-label="ID Drone">{drone.id.value}</span>
@@ -81,6 +109,7 @@ export default (props) => {
                 labelPlacement="start" label="Tracking"
             />
         </Box>
-    </Container>);
+        <button onClick={update()}>Atualizar drone {drone.name.value}</button>
+    </div>);
 
 }
