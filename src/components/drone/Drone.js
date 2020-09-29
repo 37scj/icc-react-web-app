@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, FormControlLabel, Slider, Typography, Grid, FormLabel, Container, Input, InputLabel } from '@material-ui/core';
+import { Switch, FormControlLabel, Slider, Typography, Grid, FormLabel, Container, Input, InputLabel, Button } from '@material-ui/core';
 import droneService from '../../services/droneService';
 import style from './drone.module.css';
 import { Label } from '@material-ui/icons';
 
 export default (props) => {
-    console.log(props)
+    console.log('render', props)
     const drone = {
         id: useFormInput(props.id ? props.id : 1),
         nome: useFormInput(props.nome ? props.nome : 'Drone 1'),
@@ -15,23 +15,43 @@ export default (props) => {
         umidade: useFormInput(props.umidade ? props.umidade : 45.3),
         tracking: useFormInput((props.tracking != null || props.tracking != undefined) ? props.tracking : false),
     }
-
-    function useFormInput(initialValue, isSwitch) {
+    function setDrone(d) {
+        if ((!d || !d.id) && props.fetchDrones) {
+            props.fetchDrones();
+            return;
+        }
+        drone.id.onChange(0, d.id);
+        drone.nome.onChange(0, d.nome);
+        drone.latitude.onChange(0, d.latitude);
+        drone.longitude.onChange(0, d.longitude);
+        drone.temperatura.onChange(0, d.temperatura);
+        drone.umidade.onChange(0, d.umidade);
+        drone.tracking.onChange(0, d.tracking);
+    }
+    function useFormInput(initialValue) {
         const [value, setValue] = useState(initialValue)
         const onChange = (e, newValue) => {
+            let v=null;
             if (newValue) {
-                setValue(newValue);
+                v=newValue;
             } else {
-                setValue(e.target.value);
+                v=(e.target.value);
             }
-        }
+            setValue(v);
+            if (v != value) {
+                updateDrone();
+            }
+    }
         return {
             value,
             onChange
         }
     }
 
-    function update() {
+    async function updateDrone() {
+        if (drone.id && !drone.id.value) {
+            console.error("Drone sem ID");
+        }
         const data = {
             id: drone.id.value,
             nome: drone.nome.value,
@@ -39,43 +59,52 @@ export default (props) => {
             longitude: drone.longitude.value,
             temperatura: drone.temperatura.value,
             umidade: drone.umidade.value,
+            tracking: drone.tracking.value,
         };
 
-        console.log(data);
+        console.log('updating', drone.id, data);
 
-        droneService.saveDrone(data)
-            .then(data => console.log(data))
+
+
+        await droneService.saveDrone(data)
+            .then(data => console.log('save', data))
             .catch(error => console.log(error));
 
     };
 
     function deleteDrone() {
-        droneService.deleteDrone(drone.id.value)
-        .then(a=> fetchDrone() );
-    }
-    function fetchDrone() {
-        droneService.getDrone(drone.id.value)
-            .then(d => d.json())
-            .then(d => setDrones(d))
-            .catch(error => console.log(error));
+        if (drone.id) {
+            droneService.deleteDrone(drone.id.value)
+                .then(a => a.ok && fetchDrone());
+        }
     }
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            fetchDrone();
-        }, 10000);
-        // Clear timeout if the component is unmounted
-        return () => clearTimeout(timer);
-    }, []);
+    const fetchDrone = () => {
+        console.log('fetchDrone', drone);
+        if (drone && drone.id) {
+            droneService.getDrone(drone.id.value)
+                .then(d => d.json())
+                .then(d => setDrone(d))
+                .catch(error => console.log(error));
+        }
+    }
+
+    // useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         fetchDrone();
+    //     }, 10000);
+    //     // Clear timeout if the component is unmounted
+    //     return () => clearTimeout(timer);
+    // }, []);
 
 
-// container xs={12} spacing={1} className={style.drone} alignContent="center" justify="space-between" alignItems="center"
+    // container xs={12} spacing={1} className={style.drone} alignContent="center" justify="space-between" alignItems="center"
     return (<React.Fragment>
-            <Grid item xs={12} className={style.dronetitle}>
-                <label style={{ color: 'white' }}>Drone ID {drone.id.value}</label>
-            </Grid>
-        <Container maxWidth="lg" style={{minwidth:'200px'}} className={style.drone}>
-            <Grid  className="MuiInputBase-root MuiInput-root MuiInput-underline">
+        <Grid item xs={12} className={style.dronetitle}>
+            <label style={{ color: 'white' }}>Drone ID {drone.id.value}</label>
+        </Grid>
+        <Container maxWidth="lg" style={{ minwidth: '200px' }} className={style.drone}>
+            <Grid className="MuiInputBase-root MuiInput-root MuiInput-underline">
                 <FormLabel>Nome</FormLabel>
                 <input className="MuiInputBase-input MuiInput-input" label="Name" aria-label="Drone name" {...drone.nome} />
             </Grid>
@@ -106,7 +135,7 @@ export default (props) => {
                     {...drone.umidade}
                     labelplacement="start"
                     step={0.1} min={0} max={100}
-                    marks={[10,20,30,40,50,60,70,80,90]}
+                    marks={[10, 20, 30, 40, 50, 60, 70, 80, 90]}
                     valueLabelDisplay="auto"
                     valueLabelFormat={v => drone.umidade.value + '%'}
                     getAriaValueText={() => drone.umidade.value}
@@ -118,10 +147,10 @@ export default (props) => {
                     labelPlacement="start" label="Tracking"
                 />
             </Grid>
-            <Grid xs={12} spacing={1}>
-                <button onClick={() => update()}>Atualizar drone '{drone.nome.value}'</button>
-                <button onClick={() => deleteDrone()}>Excluir drone '{drone.nome.value}'</button>
-                
+            <Grid container justify="space-evenly" xs={12}>
+                <Button danger onClick={() => deleteDrone()}>Excluir</Button>
+                <Button primary onClick={() => updateDrone()}>Salvar</Button>
+                <Button primary onClick={() => fetchDrone()}>Buscar</Button>
             </Grid>
         </Container>
     </React.Fragment>

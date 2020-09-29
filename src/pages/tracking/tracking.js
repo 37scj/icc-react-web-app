@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import GoogleMapWrap from '../../components/GoogleMap/GoogleMapWrap';
-const fetch = require("isomorphic-fetch");
+import droneService from '../../services/droneService';
+
+// const fetch = require("isomorphic-fetch");
 // import map from './map.png';
 
 // fetch(url).then(r => r.json().then(r => setMarkers(r.photos)));
@@ -11,22 +13,37 @@ export default function Tracking() {
   const [markers, setMarkers] = useState([]);
   const [center, setCenter] = useState(null);
 
-  const fetchMarkers = () => {
-    const url = [
-      // Length issue
-      `https://gist.githubusercontent.com`,
-      `/farrrr/dfda7dd7fccfec5474d3`,
-      `/raw/758852bbc1979f6c4522ab4e92d1c92cba8fb0dc/data.json`
-    ].join("")
+  // const fetchMarkers = () => {
+  //   const url = [
+  //     // Length issue
+  //     `https://gist.githubusercontent.com`,
+  //     `/farrrr/dfda7dd7fccfec5474d3`,
+  //     `/raw/758852bbc1979f6c4522ab4e92d1c92cba8fb0dc/data.json`
+  //   ].join("")
 
-    fetch(url)
+  //   fetch(url)
+  //     .then(res => res.json())
+  //     .then(data => (data?.photos.slice(0, 100))??[])
+  //     .then(d => d.map(data=>Object.assign({}, data, {position: { lat: data.latitude, lng: data.longitude }})))
+  //     .then(data => setMarkers(data||[]));
+  // }
+  const fetchMarkers = () => {
+    droneService.getAllDrones()
       .then(res => res.json())
-      .then(data => (data?.photos.slice(0, 100))??[])
-      .then(d => d.map(data=>Object.assign({}, data, {position: { lat: data.latitude, lng: data.longitude }})))
-      .then(data => setMarkers(data||[]));
+      // transforma para markers
+      .then(d => d.map(data => Object.assign({}, data, { position: { lat: data.latitude, lng: data.longitude } })))
+      .then(data => setMarkers(data || []));
   }
 
   useEffect(() => fetchMarkers(), []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchMarkers();
+    }, 10000);
+    // Clear timeout if the component is unmounted
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (markers && markers[0]) {

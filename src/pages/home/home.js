@@ -45,7 +45,7 @@ function Home() {
         <Grid container xs={12} spacing={1} justify="space-around">
           {drones.map((drone, i) =>
             <Grid item key={i} item xl={4} style={{ maxWidth: '330px'}}>
-              <Drone {...drone} />
+              <Drone {...drone} fetchDrones={() => fetchDrones()}/>
             </Grid>
           )}
         </Grid>
