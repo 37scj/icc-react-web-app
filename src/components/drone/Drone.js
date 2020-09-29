@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Switch, FormControlLabel, Slider, Typography, Grid, FormLabel, Container, Input, InputLabel, Button } from '@material-ui/core';
 import droneService from '../../services/droneService';
 import style from './drone.module.css';
-import { Label } from '@material-ui/icons';
 
 export default (props) => {
     console.log('render', props)
     const drone = {
         id: useFormInput(props.id ? props.id : 1),
-        nome: useFormInput(props.nome ? props.nome : 'Drone 1'),
-        latitude: useFormInput(props.latitude ? props.latitude : 48.8882),
-        longitude: useFormInput(props.longitude ? props.longitude : 47.243232),
+        nome: useFormInput(props.nome ? props.nome : 'Drone 1'), 
+        latitude: useFormInput(props.latitude ? props.latitude : -23.533773),
+        longitude: useFormInput(props.longitude ? props.longitude : -46.625290),
         temperatura: useFormInput(props.temperatura ? props.temperatura : 29.2),
         umidade: useFormInput(props.umidade ? props.umidade : 45.3),
-        tracking: useFormInput((props.tracking != null || props.tracking != undefined) ? props.tracking : false),
+        tracking: useFormInput((props.tracking !== null || props.tracking !== undefined) ? props.tracking : false),
     }
     function setDrone(d) {
         if ((!d || !d.id) && props.fetchDrones) {
@@ -32,23 +31,23 @@ export default (props) => {
         const [value, setValue] = useState(initialValue)
         const onChange = (e, newValue) => {
             let v=null;
-            if (newValue) {
+            if (newValue != null || newValue != undefined) {
                 v=newValue;
             } else {
                 v=(e.target.value);
             }
             setValue(v);
             if (v != value) {
-                updateDrone();
+                setTimeout(()=>updateDrone(), 200);
             }
-    }
+        }
         return {
             value,
             onChange
         }
     }
 
-    async function updateDrone() {
+    function updateDrone() {
         if (drone.id && !drone.id.value) {
             console.error("Drone sem ID");
         }
@@ -64,9 +63,7 @@ export default (props) => {
 
         console.log('updating', drone.id, data);
 
-
-
-        await droneService.saveDrone(data)
+        droneService.saveDrone(data)
             .then(data => console.log('save', data))
             .catch(error => console.log(error));
 

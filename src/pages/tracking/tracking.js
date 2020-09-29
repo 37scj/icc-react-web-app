@@ -46,8 +46,9 @@ export default function Tracking() {
   }, []);
 
   useEffect(() => {
-    if (markers && markers[0]) {
-      setCenter({ lat: markers[0].lat, lng: markers[0].lng });
+    console.log(markers)
+    if (markers && markers[0] && markers[0].position) {
+      setCenter(markers[0].position);
     } else {
       setCenter({ lat: -23.533773, lng: -46.625290 });
     }
@@ -55,9 +56,9 @@ export default function Tracking() {
 
   return (<div className="Tracking">
     <h3>Tracking drone</h3>
-    <GoogleMapWrap keyName="photo_id" markers={markers} defaultCenter={center} />
+    <GoogleMapWrap keyName="id" markers={markers} defaultCenter={center} />
     {/* <img alt="Mapa mostrando onde estão os drones" src={map} style={{ 'width': '100%' }} /> */}
-    {/* markers: {JSON.stringify(markers)} */}
+    markers: {JSON.stringify(markers)}
   </div>
   );
 }

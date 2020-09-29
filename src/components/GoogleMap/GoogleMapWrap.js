@@ -39,7 +39,7 @@ const MapWithMarkers = compose(
             gridSize={10}
         >
             {((props?.markers) ?? []).map((mark, i) => (<Marker key={props.keyName ? mark[props.keyName] : 'marker_' + i} 
-                      position={{ lat: mark.latitude, lng: mark.longitude }}
+                      position={mark.position || { lat: mark.latitude, lng: mark.longitude }}
                        />))}
 
         </MarkerClusterer>
