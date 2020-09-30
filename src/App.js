@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { Fade } from '@material-ui/core';
 import Home from './pages/home/home';
-import Tracking from './pages/tracking/Tracking';
+import Tracking from './pages/tracking/tracking';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 const routes = [

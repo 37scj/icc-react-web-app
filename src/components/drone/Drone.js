@@ -105,18 +105,18 @@ export default (props) => {
                 <FormLabel>Nome</FormLabel>
                 <input className="MuiInputBase-input MuiInput-input" label="Name" aria-label="Drone name" {...drone.nome} />
             </Grid>
-            <Grid xs={12} className="MuiInputBase-root MuiInput-root MuiInput-underline">
+            <Grid container item={true} xs={12} className="MuiInputBase-root MuiInput-root MuiInput-underline">
                 <FormLabel>Latitude</FormLabel>
                 <input className="MuiInputBase-input MuiInput-input" {...drone.latitude} />
             </Grid>
-            <Grid xs={12} alignContent="stretch" className="MuiInputBase-root MuiInput-root MuiInput-underline">
+            <Grid container item={true} xs={12} alignContent="stretch" className="MuiInputBase-root MuiInput-root MuiInput-underline">
                 <FormLabel>Longitude</FormLabel>
                 <input className="MuiInputBase-input MuiInput-input" {...drone.longitude} />
             </Grid>
-            <Grid xs={12} alignItems="center" className="MuiInputBase-root MuiInput-root MuiInput-underline">
+            <Grid container item={true} xs={12} alignItems="center" className="MuiInputBase-root MuiInput-root MuiInput-underline">
                 <FormLabel>Temperature</FormLabel>
                 <input className="MuiInputBase-input MuiInput-input" {...drone.temperatura} />
-                <Slider
+                <Slider  
                     {...drone.temperatura}
                     step={0.1} min={-25} max={40}
                     marks={[-12, 0, 12, 22, 32]}
@@ -125,7 +125,7 @@ export default (props) => {
                     getAriaValueText={() => drone.temperatura.value}
                 />
             </Grid>
-            <Grid xs={12} className="MuiInputBase-root MuiInput-root MuiInput-underline">
+            <Grid item={true} xs={12} className="MuiInputBase-root MuiInput-root MuiInput-underline">
                 <FormLabel>Umidade</FormLabel>
                 <input className="MuiInputBase-input MuiInput-input" {...drone.umidade} />
                 <Slider
@@ -138,16 +138,16 @@ export default (props) => {
                     getAriaValueText={() => drone.umidade.value}
                 />
             </Grid>
-            <Grid xs={12} spacing={1}>
+            <Grid container item={true} xs={12} spacing={1}>
                 <FormControlLabel
                     control={<Switch {...drone.tracking} />}
                     labelPlacement="start" label="Tracking"
                 />
             </Grid>
-            <Grid container justify="space-evenly" xs={12}>
-                <Button danger onClick={() => deleteDrone()}>Excluir</Button>
-                <Button primary onClick={() => updateDrone()}>Salvar</Button>
-                <Button primary onClick={() => fetchDrone()}>Buscar</Button>
+            <Grid container item={true} justify="space-evenly" xs={12}>
+                <Button danger="true" onClick={() => deleteDrone()}>Excluir</Button>
+                <Button primary="true" onClick={() => updateDrone()}>Salvar</Button>
+                <Button primary="true" onClick={() => fetchDrone()}>Buscar</Button>
             </Grid>
         </Container>
     </React.Fragment>

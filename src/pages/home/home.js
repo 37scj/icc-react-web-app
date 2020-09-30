@@ -15,7 +15,7 @@ function NovoDrone(props) {
       .catch(error => console.log(error));
   }
 
-  return (<Container container style={{ padding: '30px' }}>
+  return (<Container container="true" style={{padding:'30px'}}>
     <input value={nome} onChange={e => setNome(e.target.value)} />
     <button className="add" onClick={() => add()}>Add Drone</button>
   </Container>);
@@ -37,12 +37,14 @@ function Home() {
 
   return (
     <div className="Home">
-      <Grid container xs={12} spacing={1}>
+ 
+      <Grid container xs={12} item={true} spacing={1}>
         <NovoDrone fetchDrones={() => fetchDrones()} />
       </Grid>
+     
       {/* <Drone id={1} name="Drone fixo"/> */}
       <Container maxWidth="lg">
-        <Grid container xs={12} spacing={1} justify="space-around">
+        <Grid container xs={12}  item={true} spacing={1} justify="space-around">
           {drones.map((drone, i) =>
             <Grid item key={i} item xl={4} style={{ maxWidth: '330px'}}>
               <Drone {...drone} fetchDrones={() => fetchDrones()}/>
